@@ -1,0 +1,15 @@
+{
+  "name": "netflix-clone-media-hub",
+  "private": true,
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "start:backend": "yarn workspace backend start",
+    "start:frontend:web": "yarn workspace frontend expo start --web",
+    "start:frontend:mobile": "yarn workspace frontend expo start",
+    "start:frontend:tv": "yarn workspace frontend expo start --android",
+    "docker:up": "docker-compose up -d"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
