@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    volumes:
+      - ./jellyfin/config:/config
+      - ./jellyfin/cache:/cache
+      - /media:/media:ro   # mount your external drives here
+    ports:
+      - "8096:8096"
+    environment:
+      - JELLYFIN_FFMPEG=/usr/lib/jellyfin-ffmpeg/ffmpeg
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: media-hub-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - JELLYFIN_URL=http://jellyfin:8096
+      - JELLYFIN_API_KEY=${JELLYFIN_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./jellyfin/config:/jellyfin-config
+      - /media:/media:ro
+    depends_on:
+      - jellyfin
+    restart: unless-stopped
